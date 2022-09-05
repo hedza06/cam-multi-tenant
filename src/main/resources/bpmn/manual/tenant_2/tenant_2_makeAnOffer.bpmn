@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1nk72q8" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.11.1" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.15.0">
+  <bpmn:process id="makeAnOffer" name="Make an Offer" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Start">
+      <bpmn:outgoing>Flow_0jgu6a7</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0jgu6a7" sourceRef="StartEvent_1" targetRef="Activity_163vd9y" />
+    <bpmn:serviceTask id="Activity_163vd9y" name="Make an offer" camunda:delegateExpression="${MakeAnOfferAndOutputVarDelegate}">
+      <bpmn:incoming>Flow_0jgu6a7</bpmn:incoming>
+      <bpmn:incoming>Flow_1asgo2p</bpmn:incoming>
+      <bpmn:outgoing>Flow_14w1vxv</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_1uu9ir4" name="Is Offer Made?" default="Flow_07d2c58">
+      <bpmn:incoming>Flow_14w1vxv</bpmn:incoming>
+      <bpmn:outgoing>Flow_07d2c58</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0thtf4h</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_14w1vxv" sourceRef="Activity_163vd9y" targetRef="Gateway_1uu9ir4" />
+    <bpmn:endEvent id="Event_1vuom4c" name="Offer is made">
+      <bpmn:incoming>Flow_0thtf4h</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_07d2c58" name="NO" sourceRef="Gateway_1uu9ir4" targetRef="Event_12svosz" />
+    <bpmn:sequenceFlow id="Flow_0thtf4h" name="YES" sourceRef="Gateway_1uu9ir4" targetRef="Event_1vuom4c">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${offerCreated}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:intermediateCatchEvent id="Event_12svosz" name="Wait two minutes...">
+      <bpmn:incoming>Flow_07d2c58</bpmn:incoming>
+      <bpmn:outgoing>Flow_1asgo2p</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_0krxluk">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT2M</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="Flow_1asgo2p" sourceRef="Event_12svosz" targetRef="Activity_163vd9y" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="makeAnOffer">
+      <bpmndi:BPMNEdge id="Flow_0jgu6a7_di" bpmnElement="Flow_0jgu6a7">
+        <di:waypoint x="215" y="267" />
+        <di:waypoint x="330" y="267" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_14w1vxv_di" bpmnElement="Flow_14w1vxv">
+        <di:waypoint x="430" y="267" />
+        <di:waypoint x="515" y="267" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_07d2c58_di" bpmnElement="Flow_07d2c58">
+        <di:waypoint x="540" y="242" />
+        <di:waypoint x="540" y="148" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="547" y="192" width="17" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0thtf4h_di" bpmnElement="Flow_0thtf4h">
+        <di:waypoint x="565" y="267" />
+        <di:waypoint x="702" y="267" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="622" y="249" width="23" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1asgo2p_di" bpmnElement="Flow_1asgo2p">
+        <di:waypoint x="522" y="130" />
+        <di:waypoint x="380" y="130" />
+        <di:waypoint x="380" y="227" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="249" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="185" y="292" width="24" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1bk9uqy_di" bpmnElement="Activity_163vd9y">
+        <dc:Bounds x="330" y="227" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1uu9ir4_di" bpmnElement="Gateway_1uu9ir4" isMarkerVisible="true">
+        <dc:Bounds x="515" y="242" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="504" y="299" width="73" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1vuom4c_di" bpmnElement="Event_1vuom4c">
+        <dc:Bounds x="702" y="249" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="687" y="292" width="66" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0y6la49_di" bpmnElement="Event_12svosz">
+        <dc:Bounds x="522" y="112" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="516" y="76" width="48" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

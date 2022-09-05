@@ -1,0 +1,52 @@
+spring:
+  # Datasource Configuration
+  datasource:
+    name: MySQL Connection
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/cam-multi-tenant?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=CET
+    username: root
+    password: root
+  # Java Persistence API Configuration
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLInnoDBDialect
+    database: MYSQL
+    show-sql: false
+    open-in-view: false
+    # Hibernate Properties
+    properties:
+      hibernate.cache.use_second_level_cache: false
+      hibernate.cache.use_query_cache: false
+      hibernate.generate_statistics: false
+      hibernate.show_sql: false
+      hibernate.SQL: false
+
+# API context path configuration
+server:
+  servlet:
+    context-path: /api
+
+# Logging configuration
+logging:
+  level:
+    org.camunda: INFO
+
+# CAM BPM Configuration
+camunda:
+  bpm:
+    id-generator: simple
+    auto-deployment-enabled: true
+    deployment-resource-pattern:
+      - "classpath*:**/auto/**/*.bpmn"
+      - "classpath*:**/auto/**/*.dmn"
+    application:
+      deploy-changed-only: true
+    admin-user:
+      id: admin
+      password: admin123
+      first-name: Administrator
+    filter:
+      create: All tasks
+    history-level: "full"
+    database:
+      schema-update: true
+      type: mysql
